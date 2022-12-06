@@ -20,19 +20,29 @@ public class InitFrame {
 	InitFrame() {
 		this.of = new OrderFrame(this);
 		of.getItemTable().removeRow(0);
-		int counter = 0;
-		dptList = new Vector<>();
+		DepartmentObjects objects;
 		gdd = new GetDepartmentDetails();
-		of.getDeptTable().removeRow(0);
-		for (DepartmentObjects objects : gdd.getListOfObjs()) {
-			if (counter == 5) {
-				counter = 0;
-				of.getDeptTable().addRow(dptList);
-				dptList = new Vector<>();
+//		for(int i=0;i<(gdd.getListOfObjs().size()/5)+1;i++)
+//		{				
+			int count=0;
+			of.getDeptTable().getDataVector().removeAllElements();
+			dptList = new Vector<>();
+			for (int i=0;i< gdd.getListOfObjs().size();i++) 
+			{
+			objects = gdd.getListOfObjs().get(i);
+				if(count==5) 
+				{
+					count=0;
+					of.getDeptTable().addRow(dptList);
+					dptList = new Vector<>();
+				}	
+				dptList.add(objects.getPROP_NAME());
+				count++;
 			}
-			dptList.add(objects.getPROP_NAME());
-			counter += 1;
-		}
+			if(!dptList.isEmpty())
+			{
+				of.getDeptTable().addRow(dptList);
+			}
 		of.setVisible(true);
 	}
 
@@ -51,35 +61,42 @@ public class InitFrame {
 	public void setDptList(Vector<String> dptList) {
 		this.dptList = dptList;
 	}
-
+	private ArrayList<ItemObjects> listOfItems;
+	public void getListOfItem(int row,int col)
+	{
+		int pos = (row * 5) + (col);
+		ItemObjects object = listOfItems.get(pos);
+		of.getBillTableModel().InsertRow(object);
+	}
+	
 	public void initItemList(int row, int column) {
-		of.getItemTable().getDataVector().removeAllElements();
+//		System.out.println("List is Printed");
 		Vector<String> rowData = new Vector<String>();
-		int pos = (row*5) + (column);
+		int pos = (row * 5) + (column);
 		int counter = 0;
-		GetDepartmentDetails gd = new GetDepartmentDetails();
+		gdd = new GetDepartmentDetails();
 		GetItemDetails gi = new GetItemDetails();
-		DepartmentObjects dobj = gd.getListOfObjs().get(pos);
+		DepartmentObjects dobj = gdd.getListOfObjs().get(pos);
 		gi.getItemDetails();
 		ArrayList<ItemObjects> iobj = gi.getListOfObj();
-		for(ItemObjects item: iobj)
-		{
+		for (ItemObjects item : iobj) {
 			gdd.getMapOfObj().get(item.getDeptCode()).add(item);
 		}
-		
-		
-		
-		ArrayList<ItemObjects> listOfItems = gdd.getMapOfObj().get(dobj.getPROP_ID());
-		for (ItemObjects obj : listOfItems) {
-			if (counter == 5) {
+		listOfItems = gdd.getMapOfObj().get(dobj.getPROP_ID());
+		for (ItemObjects obj : listOfItems) 
+		{
+			if (counter == 5) 
+			{
 				counter = 0;
 				of.getItemTable().addRow(rowData);
-				rowData = new Vector<String>();
+				rowData = new Vector<>();
 			}
-			System.out.println(obj.getItemName());
-			rowData.add(obj.getItemName() + "\n" + obj.getItemMrp());
+			rowData.add(obj.getItemName() + "\n ₹:" + obj.getItemMrp());
 			counter += 1;
 		}
-		System.out.println(pos+"---");
+		if(!rowData.isEmpty())
+		{
+			of.getItemTable().addRow(rowData);
+		}
 	}
 }

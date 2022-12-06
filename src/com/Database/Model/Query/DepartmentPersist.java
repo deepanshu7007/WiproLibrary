@@ -32,7 +32,6 @@ public class DepartmentPersist {
 		gi.getItemDetails();
 		iobj = gi.getListOfObj();
 		for (ItemObjects item : iobj) {
-//			System.out.println(item.getDeptCode());
 			gd.getMapOfObj().get(item.getDeptCode()).add(item);
 		}
 		

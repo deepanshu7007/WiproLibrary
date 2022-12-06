@@ -41,9 +41,9 @@ public GetDepartmentDetails()
 			listOfObjs.add(dobj);
 			MapOfObj.put(rs.getInt(1), new ArrayList<ItemObjects>());
 		}
-		System.out.println(MapOfObj.size());
+		
 	} catch (SQLException e) {
-		// TODO Auto-generated catch block
+		
 		e.printStackTrace();
 	}
 	
@@ -51,6 +51,11 @@ public GetDepartmentDetails()
 public static void main(String[] arhs)
 {
 	GetDepartmentDetails gdd = new GetDepartmentDetails();
-	
+	ArrayList<DepartmentObjects> list = gdd.getListOfObjs();
+	System.out.println((list.size()/5)+1);
+	for(DepartmentObjects objs:list)
+	{
+		System.out.println(objs.getPROP_NAME());
+	}
 }
 }

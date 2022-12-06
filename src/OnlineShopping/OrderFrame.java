@@ -26,6 +26,9 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
+
+import com.BillOrder.Dao.ItemObjects;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -41,6 +44,8 @@ import javax.swing.SwingConstants;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -71,7 +76,12 @@ public class OrderFrame extends JFrame {
 	private DefaultTableModel DeptTable;
 	private DefaultTableModel ItemTable;
 	private JTextField textField_7;
-	
+	private ExampleTableModel etm;
+	public ExampleTableModel getBillTableModel()
+	{
+		return etm;
+		
+	}
 	public DefaultTableModel getItemTable() {
 		return ItemTable;
 	}
@@ -175,6 +185,8 @@ public class OrderFrame extends JFrame {
 			int row = table_2.rowAtPoint(evt.getPoint());
 		    int col = table_2.columnAtPoint(evt.getPoint());
 		    if (row >= 0 && col >= 0) {
+		    	DefaultTableModel dtm = (DefaultTableModel) table_1.getModel();
+		    	dtm.getDataVector().removeAllElements();
 		        it.initItemList(row, col);
 		    }
 
@@ -274,7 +286,8 @@ public class OrderFrame extends JFrame {
 		gbc_scrollPane.gridy = 4;
 		panel.add(scrollPane, gbc_scrollPane);
 		
-		 table = new JTable(new ExampleTableModel());
+		etm = new ExampleTableModel();
+		 table = new JTable(etm);
 		 
 		 	        table.getColumn("action").setCellRenderer(new ButtonCellRenderer());
 		 	        table.getColumn("action").setCellEditor(new ButtonCellEditor());
@@ -293,7 +306,7 @@ public class OrderFrame extends JFrame {
 		 	        		table.getColumnModel().getColumn(3).setPreferredWidth(25);
 		 	        		table.getColumnModel().getColumn(4).setPreferredWidth(25);	
 		
-		table = new JTable();
+		
 		header.setFont(new Font("Dialog", Font.PLAIN, 25));
 		header.setPreferredSize(new Dimension(100, 50));
 		
@@ -311,7 +324,7 @@ public class OrderFrame extends JFrame {
 			public Class getColumnClass(int columnIndex) {
 		        return String.class;
 		      }
-		}	   ;    
+		};    
 		
 		table_1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt)
@@ -319,12 +332,8 @@ public class OrderFrame extends JFrame {
 				int row = table_1.rowAtPoint(evt.getPoint());
 			    int col = table_1.columnAtPoint(evt.getPoint());
 			    if (row >= 0 && col >= 0) {
-			       InitItemList itl = new InitItemList();
-			       itl.initItemList(null, row, col);
-			       DefaultTableModel dtm = (DefaultTableModel)table_2.getModel();
-			        dtm.getDataVector().removeAllElements();
+			    	it.getListOfItem(row, col);
 			    }
-
 			}
 			});
 				
@@ -743,12 +752,15 @@ public class OrderFrame extends JFrame {
 		DeptTable = deptTable;
 	}
 	public static class ExampleTableModel extends DefaultTableModel {
+int index=0;
 
+		public void InsertRow(ItemObjects objects)
+		{
+			addRow(new Object[]{objects.getItemName() ,1 , (objects.getItemMrp()),(objects.getItemMrp()), index+=1});
+		}
         public ExampleTableModel() {
             super(new Object[]{"Name", "Qty","Price" ,"Amount", "action"}, 0);
-            for (int index = 0; index < 10; index++) {
-                addRow(new Object[]{"Item " + index, 0.00,0.00, index});
-            }
+            
         }
 
         @Override
@@ -806,14 +818,15 @@ public class OrderFrame extends JFrame {
 		}
     	
     }
-   public static class SpinnerEditor extends DefaultCellEditor
+   public static class SpinnerEditor extends DefaultCellEditor implements ChangeListener
     {
         private JSpinner spinner;
-
+        private JTable table;
         public SpinnerEditor()
         {
             super( new JTextField() );
-            spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
+            spinner = new JSpinner(new SpinnerNumberModel(1, -100, 100, 1));
+            spinner.addChangeListener(this);
             spinner.setBorder( null );
             spinner.setFont(new Font("Dialog", Font.BOLD, 20));
         }
@@ -821,14 +834,29 @@ public class OrderFrame extends JFrame {
         public Component getTableCellEditorComponent(
             JTable table, Object value, boolean isSelected, int row, int column)
         {
+        	this.table = table;
             spinner.setValue( value );
             return spinner;
         }
+        
+       
 
         public Object getCellEditorValue()
         {
             return spinner.getValue();
         }
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			int qty = (int)spinner.getValue();
+			Double price = (Double)table.getValueAt(table.getSelectedRow(),2);
+			
+			Double amount = qty*price;
+			
+			System.out.println(qty);
+					table.setValueAt(amount,table.getSelectedRow(),3);
+			
+		}
     }
     public static class ButtonCellEditor extends AbstractCellEditor implements TableCellEditor {
 
