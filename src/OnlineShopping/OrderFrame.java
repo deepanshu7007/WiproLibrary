@@ -48,6 +48,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import java.awt.Insets;
 
@@ -61,6 +63,7 @@ public class OrderFrame extends JFrame {
 	public void setTable_2(JTable table_2) {
 		this.table_2 = table_2;
 	}
+	private double totalAmount=0.00;
 	private JPanel contentPane;
 	private JTextField txtMobileNo;
 	private JTable table;
@@ -120,7 +123,7 @@ public class OrderFrame extends JFrame {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{78, 96, 66, 49, 131, 292, 0, 0};
 		gbl_panel.rowHeights = new int[]{34, 31, 44, 69, 323, 197, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
@@ -137,8 +140,7 @@ public class OrderFrame extends JFrame {
 		JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Take Away"}));
 		GridBagConstraints gbc_comboBox_1 = new GridBagConstraints();
-		gbc_comboBox_1.anchor = GridBagConstraints.WEST;
-		gbc_comboBox_1.fill = GridBagConstraints.VERTICAL;
+		gbc_comboBox_1.fill = GridBagConstraints.BOTH;
 		gbc_comboBox_1.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox_1.gridx = 2;
 		gbc_comboBox_1.gridy = 0;
@@ -248,12 +250,31 @@ public class OrderFrame extends JFrame {
 		textField.setFont(new Font("Dialog", Font.PLAIN, 25));
 		textField.setColumns(10);
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 4;
+		gbc_textField.gridwidth = 2;
 		gbc_textField.fill = GridBagConstraints.BOTH;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 2;
 		panel.add(textField, gbc_textField);
+		
+		JLabel lblBranch = new JLabel("Branch");
+		lblBranch.setFont(new Font("Dialog", Font.PLAIN, 18));
+		GridBagConstraints gbc_lblBranch = new GridBagConstraints();
+		gbc_lblBranch.insets = new Insets(0, 0, 5, 5);
+		gbc_lblBranch.anchor = GridBagConstraints.EAST;
+		gbc_lblBranch.gridx = 3;
+		gbc_lblBranch.gridy = 2;
+		panel.add(lblBranch, gbc_lblBranch);
+		
+		JComboBox comboBox_1_2 = new JComboBox();
+		comboBox_1_2.setFont(new Font("Dialog", Font.BOLD, 18));
+		comboBox_1_2.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7"}));
+		GridBagConstraints gbc_comboBox_1_2 = new GridBagConstraints();
+		gbc_comboBox_1_2.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBox_1_2.fill = GridBagConstraints.BOTH;
+		gbc_comboBox_1_2.gridx = 4;
+		gbc_comboBox_1_2.gridy = 2;
+		panel.add(comboBox_1_2, gbc_comboBox_1_2);
 		
 		JLabel lblSearchByName = new JLabel("Search by name");
 		lblSearchByName.setFont(new Font("Dialog", Font.PLAIN, 18));
@@ -743,6 +764,17 @@ public class OrderFrame extends JFrame {
 		gbc_btnNewButton_1_1_2_1_1_1_1_1_1.gridy = 4;
 		panel_1_1_1.add(btnNewButton_1_1_2_1_1_1_1_1_1, gbc_btnNewButton_1_1_2_1_1_1_1_1_1);
 		
+		table.getModel().addTableModelListener(new TableModelListener() {
+
+		      public void tableChanged(TableModelEvent e) {
+totalAmount=0.00;
+		    	  for(int i=0;i<table.getRowCount();i++)
+		    	  {
+		    		  totalAmount = totalAmount + (double)(table.getValueAt(i, 3));
+		    		  lblNewLabel_2.setText(String.valueOf(totalAmount));
+		    	  }
+		      }
+		});
 	}
 	public DefaultTableModel getDeptTable() {
 		return DeptTable;
@@ -853,11 +885,25 @@ int index=0;
 			
 			Double amount = qty*price;
 			
-			System.out.println(qty);
+			
 					table.setValueAt(amount,table.getSelectedRow(),3);
 			
 		}
     }
+   public static class JTableChange implements ChangeListener
+   {
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		JTable table = (JTable)e.getSource();
+		int totalRows = table.getRowCount();
+		for(int i=0;i<totalRows;i++)
+		{
+			System.out.println(table.getValueAt(i, 5));
+		}
+	}
+	   
+   }
     public static class ButtonCellEditor extends AbstractCellEditor implements TableCellEditor {
 
         private JButton editor;
