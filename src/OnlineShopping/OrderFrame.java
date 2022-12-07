@@ -11,7 +11,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.MouseEvent;import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Timer;
 
@@ -28,6 +31,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import com.BillOrder.Dao.ItemObjects;
+import com.testPackages.FieldAction;
+
+import SearchModule.SearchFrameTest;
+import SearchModule.SearchTableModel;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -209,10 +216,10 @@ public class OrderFrame extends JFrame {
 		panel.add(lblMobileNo, gbc_lblMobileNo);
 		txtMobileNo.setFont(new Font("Dialog", Font.PLAIN, 25));
 		GridBagConstraints gbc_txtMobileNo = new GridBagConstraints();
+		gbc_txtMobileNo.gridwidth = 2;
 		gbc_txtMobileNo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtMobileNo.anchor = GridBagConstraints.NORTH;
 		gbc_txtMobileNo.insets = new Insets(0, 0, 5, 5);
-		gbc_txtMobileNo.gridwidth = 2;
 		gbc_txtMobileNo.gridx = 1;
 		gbc_txtMobileNo.gridy = 1;
 		panel.add(txtMobileNo, gbc_txtMobileNo);
@@ -240,6 +247,7 @@ public class OrderFrame extends JFrame {
 		JLabel lblCustname = new JLabel("Cust-Name");
 		lblCustname.setFont(new Font("Dialog", Font.PLAIN, 18));
 		GridBagConstraints gbc_lblCustname = new GridBagConstraints();
+		gbc_lblCustname.gridwidth = 2;
 		gbc_lblCustname.fill = GridBagConstraints.BOTH;
 		gbc_lblCustname.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCustname.gridx = 0;
@@ -250,37 +258,17 @@ public class OrderFrame extends JFrame {
 		textField.setFont(new Font("Dialog", Font.PLAIN, 25));
 		textField.setColumns(10);
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 2;
+		gbc_textField.gridwidth = 3;
 		gbc_textField.fill = GridBagConstraints.BOTH;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 1;
+		gbc_textField.gridx = 2;
 		gbc_textField.gridy = 2;
 		panel.add(textField, gbc_textField);
-		
-		JLabel lblBranch = new JLabel("Branch");
-		lblBranch.setFont(new Font("Dialog", Font.PLAIN, 18));
-		GridBagConstraints gbc_lblBranch = new GridBagConstraints();
-		gbc_lblBranch.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBranch.anchor = GridBagConstraints.EAST;
-		gbc_lblBranch.gridx = 3;
-		gbc_lblBranch.gridy = 2;
-		panel.add(lblBranch, gbc_lblBranch);
-		
-		JComboBox comboBox_1_2 = new JComboBox();
-		comboBox_1_2.setFont(new Font("Dialog", Font.BOLD, 18));
-		comboBox_1_2.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7"}));
-		GridBagConstraints gbc_comboBox_1_2 = new GridBagConstraints();
-		gbc_comboBox_1_2.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_1_2.fill = GridBagConstraints.BOTH;
-		gbc_comboBox_1_2.gridx = 4;
-		gbc_comboBox_1_2.gridy = 2;
-		panel.add(comboBox_1_2, gbc_comboBox_1_2);
 		
 		JLabel lblSearchByName = new JLabel("Search by name");
 		lblSearchByName.setFont(new Font("Dialog", Font.PLAIN, 18));
 		GridBagConstraints gbc_lblSearchByName = new GridBagConstraints();
-		gbc_lblSearchByName.anchor = GridBagConstraints.WEST;
-		gbc_lblSearchByName.fill = GridBagConstraints.VERTICAL;
+		gbc_lblSearchByName.fill = GridBagConstraints.BOTH;
 		gbc_lblSearchByName.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSearchByName.gridwidth = 2;
 		gbc_lblSearchByName.gridx = 0;
@@ -288,6 +276,33 @@ public class OrderFrame extends JFrame {
 		panel.add(lblSearchByName, gbc_lblSearchByName);
 		
 		textField_7 = new JTextField();
+		textField_7.setActionCommand("SEARCH_NAME");
+		FieldAction fa = new FieldAction(it.getIobj());
+		textField_7.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getActionCommand()=="SEARCH_NAME")
+				{
+					ArrayList<ItemObjects> rowData = new ArrayList<ItemObjects>();
+					for(ItemObjects item:it.getIobj())
+					{
+						rowData.add(item);
+					}
+						 SearchTableModel stmModel = new SearchTableModel(rowData);
+					SearchFrameTest sft = new SearchFrameTest(stmModel);
+					sft.setVisible(true);
+					sft.addWindowListener(new WindowAdapter() {
+						@Override
+						public void windowClosed(WindowEvent e) {
+							System.out.println(sft.getSelectedRow());
+						}
+						
+					});
+				}
+				
+			}
+		});
 		textField_7.setFont(new Font("Dialog", Font.PLAIN, 25));
 		textField_7.setColumns(10);
 		GridBagConstraints gbc_textField_7 = new GridBagConstraints();

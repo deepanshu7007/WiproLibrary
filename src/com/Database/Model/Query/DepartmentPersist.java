@@ -34,11 +34,7 @@ public class DepartmentPersist {
 		for (ItemObjects item : iobj) {
 			gd.getMapOfObj().get(item.getDeptCode()).add(item);
 		}
-		
-//		ArrayList<ItemObjects> items = 	gd.getMapOfObj().get(26);
-//		?for(ItemObjects item : items)
-//		System.out.println(item.getDeptCode()+"---"+item.getDeptName()+"---"+"---"+item.getItemName());
-	}
+}
 
 	public static void main(String... args) {
 		DepartmentPersist dp = new DepartmentPersist();

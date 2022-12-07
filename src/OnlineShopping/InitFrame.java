@@ -1,27 +1,38 @@
 package OnlineShopping;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
+
 import java.util.ArrayList;
 import java.util.Vector;
-
-import javax.swing.table.DefaultTableModel;
-
 import com.BillOrder.Dao.DepartmentObjects;
 import com.BillOrder.Dao.ItemObjects;
 import com.Database.Model.Query.GetDepartmentDetails;
 import com.Database.Model.Query.GetItemDetails;
 
 public class InitFrame {
-	OrderFrame of;
-	GetDepartmentDetails gdd;
-	Vector<String> dptList;
+	private OrderFrame of;
+	private GetItemDetails gtd;
+	private GetDepartmentDetails gdd;
+	private Vector<String> dptList;
+	private ArrayList<ItemObjects> iobj;
+	public ArrayList<ItemObjects> getIobj() {
+		return iobj;
+	}
 
-	InitFrame() {
+	public void setIobj(ArrayList<ItemObjects> iobj) {
+		this.iobj = iobj;
+	}
+
+	public InitFrame() {
+		gtd = new GetItemDetails();
+		gtd.getItemDetails();
+		System.out.print(gtd.getListOfObj().size());
+		iobj= gtd.getListOfObj();
 		this.of = new OrderFrame(this);
 		of.getItemTable().removeRow(0);
 		DepartmentObjects objects;
 		gdd = new GetDepartmentDetails();
+		
 //		for(int i=0;i<(gdd.getListOfObjs().size()/5)+1;i++)
 //		{				
 			int count=0;
@@ -70,7 +81,6 @@ public class InitFrame {
 	}
 	
 	public void initItemList(int row, int column) {
-//		System.out.println("List is Printed");
 		Vector<String> rowData = new Vector<String>();
 		int pos = (row * 5) + (column);
 		int counter = 0;
@@ -78,7 +88,7 @@ public class InitFrame {
 		GetItemDetails gi = new GetItemDetails();
 		DepartmentObjects dobj = gdd.getListOfObjs().get(pos);
 		gi.getItemDetails();
-		ArrayList<ItemObjects> iobj = gi.getListOfObj();
+		iobj = gi.getListOfObj();
 		for (ItemObjects item : iobj) {
 			gdd.getMapOfObj().get(item.getDeptCode()).add(item);
 		}

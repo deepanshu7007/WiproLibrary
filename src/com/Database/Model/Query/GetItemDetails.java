@@ -31,15 +31,7 @@ public class GetItemDetails {
 				dobj.setItemMrp(rs.getDouble(4)); //for dept price
 				ListOfObj.add(dobj);
 			}
-//			for(ItemObjects obj : ListOfObj)
-//			{
-//			System.out.println("Department Name:"+obj.getDeptCode());
-//				System.out.println("Department Name:"+obj.getDeptName());
-//				System.out.println("Item Name:"+obj.getItemName());
-//				System.out.println("MRP of item:"+obj.getItemMrp());
-//				System.out.println();
-//				
-//			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
