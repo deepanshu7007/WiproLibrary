@@ -17,6 +17,7 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Timer;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -289,13 +290,20 @@ public class OrderFrame extends JFrame {
 					{
 						rowData.add(item);
 					}
-						 SearchTableModel stmModel = new SearchTableModel(rowData);
+					SearchTableModel stmModel = new SearchTableModel(rowData);
 					SearchFrameTest sft = new SearchFrameTest(stmModel);
 					sft.setVisible(true);
 					sft.addWindowListener(new WindowAdapter() {
 						@Override
 						public void windowClosed(WindowEvent e) {
-							System.out.println(sft.getSelectedRow());
+							Vector<Object> newRow = new Vector<Object>();
+							newRow.add(stmModel.GetRowData(sft.getSelectedRow()).getItemName());
+							newRow.add(stmModel.GetRowData(sft.getSelectedRow()).getQtyToRemove());
+							newRow.add(stmModel.GetRowData(sft.getSelectedRow()).getItemMrp());
+							newRow.add(stmModel.GetRowData(sft.getSelectedRow()).getItemMrp());
+							newRow.add(1);
+							etm.getDataVector().add(newRow);
+							etm.fireTableDataChanged();
 						}
 						
 					});

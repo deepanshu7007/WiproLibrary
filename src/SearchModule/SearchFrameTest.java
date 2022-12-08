@@ -49,8 +49,8 @@ public class SearchFrameTest extends JFrame {
 	 * Returns the value of the field called 'selectedRow'.
 	 * @return Returns the selectedRow.
 	 */
-	public Vector<Object> getSelectedRow() {
-		return this.SelectedRow;
+	public int getSelectedRow() {
+		return table.getSelectedRow();
 	}
 
 	private JTable table;
