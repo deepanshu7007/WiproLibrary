@@ -129,9 +129,9 @@ public class OrderFrame extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{78, 96, 66, 49, 131, 292, 0, 0};
+		gbl_panel.columnWidths = new int[]{78, 96, 66, 49, 131, 191, 0, 0};
 		gbl_panel.rowHeights = new int[]{34, 31, 44, 69, 323, 197, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
@@ -387,10 +387,9 @@ public class OrderFrame extends JFrame {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(255, 0, 0), 2, true));
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.anchor = GridBagConstraints.NORTH;
-		gbc_panel_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel_1.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_1.gridwidth = 5;
+		gbc_panel_1.gridwidth = 4;
 		gbc_panel_1.gridx = 0;
 		gbc_panel_1.gridy = 5;
 		panel.add(panel_1, gbc_panel_1);
@@ -606,9 +605,10 @@ public class OrderFrame extends JFrame {
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setBorder(new LineBorder(Color.RED, 2, true));
 		GridBagConstraints gbc_panel_1_1 = new GridBagConstraints();
+		gbc_panel_1_1.gridwidth = 2;
 		gbc_panel_1_1.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_1_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_panel_1_1.gridx = 5;
+		gbc_panel_1_1.gridx = 4;
 		gbc_panel_1_1.gridy = 5;
 		panel.add(panel_1_1, gbc_panel_1_1);
 		GridBagLayout gbl_panel_1_1 = new GridBagLayout();
@@ -761,6 +761,7 @@ public class OrderFrame extends JFrame {
 		
 		JButton btnNewButton_1_1_2 = new JButton("SAVE ONLY");
 		GridBagConstraints gbc_btnNewButton_1_1_2 = new GridBagConstraints();
+		gbc_btnNewButton_1_1_2.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1_1_2.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1_1_2.gridx = 0;
 		gbc_btnNewButton_1_1_2.gridy = 1;
@@ -768,6 +769,7 @@ public class OrderFrame extends JFrame {
 		
 		JButton btnNewButton_1_1_2_1_1 = new JButton("(F8)CREDIT CARD");
 		GridBagConstraints gbc_btnNewButton_1_1_2_1_1 = new GridBagConstraints();
+		gbc_btnNewButton_1_1_2_1_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1_1_2_1_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1_1_2_1_1.gridx = 0;
 		gbc_btnNewButton_1_1_2_1_1.gridy = 2;
@@ -775,6 +777,7 @@ public class OrderFrame extends JFrame {
 		
 		JButton btnNewButton_1_1_2_1_1_1_1 = new JButton("(F4) CREDIT");
 		GridBagConstraints gbc_btnNewButton_1_1_2_1_1_1_1 = new GridBagConstraints();
+		gbc_btnNewButton_1_1_2_1_1_1_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1_1_2_1_1_1_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1_1_2_1_1_1_1.gridx = 0;
 		gbc_btnNewButton_1_1_2_1_1_1_1.gridy = 3;
@@ -782,6 +785,7 @@ public class OrderFrame extends JFrame {
 		
 		JButton btnNewButton_1_1_2_1_1_1_1_1_1 = new JButton("(F7) ONLINE PAYMENT");
 		GridBagConstraints gbc_btnNewButton_1_1_2_1_1_1_1_1_1 = new GridBagConstraints();
+		gbc_btnNewButton_1_1_2_1_1_1_1_1_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1_1_2_1_1_1_1_1_1.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton_1_1_2_1_1_1_1_1_1.gridx = 0;
 		gbc_btnNewButton_1_1_2_1_1_1_1_1_1.gridy = 4;
