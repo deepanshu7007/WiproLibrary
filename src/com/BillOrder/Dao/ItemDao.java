@@ -3,7 +3,7 @@ package com.BillOrder.Dao;
 public class ItemDao {
 	private int id;
 	private String item_name;
-	private double Max_Retail_Price;
+	private Double Max_Retail_Price;
 	private int qty_to_less;
 	private int PROP_ID;
 	private String Department_Name;
@@ -19,7 +19,7 @@ public class ItemDao {
 	public void setItem_name(String item_name) {
 		this.item_name = item_name;
 	}
-	public double getMax_Retail_Price() {
+	public Double getMax_Retail_Price() {
 		return Max_Retail_Price;
 	}
 	public void setMax_Retail_Price(double max_Retail_Price) {

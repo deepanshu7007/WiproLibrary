@@ -20,15 +20,17 @@ public class GetItemDetails {
 			ConnectionProvider cp = new ConnectionProvider();
 			con = cp.establishConnection();
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select ItemID,Item_Name,Qty_To_Less,Max_Retail_Price,PROP_ID,PROP_NAME  from packing_belongs_csv inner join departments on PROP_ID = Department order by PROP_ID;");
+			ResultSet rs = stmt.executeQuery("select ItemID,Item_Name,Qty_To_Less,Sale_Rate,Max_Retail_Price,PROP_ID,PROP_NAME  from packing_belongs_csv inner join departments on PROP_ID = Department order by PROP_ID;");
 			while(rs.next())
 			{
 				dobj = new ItemObjects();
 				dobj.setItemCode(rs.getInt(1)); // for item code
 				dobj.setItemName(rs.getString(2)); // for item name
-				dobj.setDeptCode(rs.getInt(5)); //for dept. code
-				dobj.setDeptName(rs.getString(6)); //for dept Name
-				dobj.setItemMrp(rs.getDouble(4)); //for dept price
+				dobj.setQtyToRemove(rs.getInt(3));
+				dobj.setItemPrice(rs.getDouble(4));
+				dobj.setItemMrp(rs.getDouble(5)); //for dept price
+				dobj.setDeptCode(rs.getInt(6)); //for dept. code
+				dobj.setDeptName(rs.getString(7)); //for dept Name
 				ListOfObj.add(dobj);
 			}
 			

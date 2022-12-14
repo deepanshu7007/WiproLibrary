@@ -81,34 +81,34 @@ private SearchTableModel dtm;
 		};
 		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 		table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "Enter");
-		table.getActionMap().put("Enter", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-				Name = (table.getValueAt(table.getSelectedRow(), 1).toString());
-				alias = (table.getValueAt(table.getSelectedRow(), 0).toString());
-				SelectedRow.add(alias);
-				SelectedRow.add(Name);
-				dispose();
-				}
-				catch(ArrayIndexOutOfBoundsException exp)
-				{
-					JOptionPane.showMessageDialog(null, "NO RECORD FOUND");
-					FilterText.setText("");
-				}
-			}
-		});
-		table.addMouseListener(new MouseAdapter() {
-		public void mouseClicked(MouseEvent evt)
-		{
-			alias = (table.getValueAt(table.getSelectedRow(), 0).toString());
-			Name = (table.getValueAt(table.getSelectedRow(), 1).toString());
-			SelectedRow.add(alias);
-			SelectedRow.add(Name);
-			dispose();
-		}
-		});
+//		table.getActionMap().put("Enter", new AbstractAction() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				try {
+//				Name = (table.getValueAt(table.getSelectedRow(), 1).toString());
+//				alias = (table.getValueAt(table.getSelectedRow(), 0).toString());
+//				SelectedRow.add(alias);
+//				SelectedRow.add(Name);
+//				dispose();
+//				}
+//				catch(ArrayIndexOutOfBoundsException exp)
+//				{
+//					JOptionPane.showMessageDialog(null, "NO RECORD FOUND");
+//					FilterText.setText("");
+//				}
+//			}
+//		});
+//		table.addMouseListener(new MouseAdapter() {
+//		public void mouseClicked(MouseEvent evt)
+//		{
+//			alias = (table.getValueAt(table.getSelectedRow(), 0).toString());
+//			Name = (table.getValueAt(table.getSelectedRow(), 1).toString());
+//			SelectedRow.add(alias);
+//			SelectedRow.add(Name);
+//			dispose();
+//		}
+//		});
 		
 		table.setRowHeight(25);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 18));
