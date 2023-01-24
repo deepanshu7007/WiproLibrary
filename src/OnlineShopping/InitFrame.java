@@ -1,10 +1,15 @@
 package OnlineShopping;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import com.BillOrder.Dao.BillMasterDao;
 import com.BillOrder.Dao.BillTaxDao;
@@ -15,12 +20,13 @@ import com.Database.Model.Query.GetItemDetails;
 import com.testPackages.ButtonActionsFrame;
 
 public class InitFrame implements ActionListener {
+	private Vector<Vector<ItemObjects>> itemTableData;
 	private OrderFrame of;
 	private GetItemDetails gtd;
 	private GetDepartmentDetails gdd;
 	private Vector<String> dptList;
 	private ArrayList<ItemObjects> iobj;
-
+	
 	public ArrayList<ItemObjects> getIobj() {
 		return iobj;
 	}
@@ -28,18 +34,18 @@ public class InitFrame implements ActionListener {
 	public void setIobj(ArrayList<ItemObjects> iobj) {
 		this.iobj = iobj;
 	}
-
-	public InitFrame() {
+public InitFrame() {
 		gtd = new GetItemDetails();
-		gtd.getItemDetails();
-		iobj = gtd.getListOfObj();
+		iobj = gtd.getItemDetails(false);
 		this.of = new OrderFrame(this);
 		of.getItemTable().removeRow(0);
 		DepartmentObjects objects;
 		gdd = new GetDepartmentDetails();
+		
 		int count = 0;
 		of.getDeptTable().getDataVector().removeAllElements();
 		dptList = new Vector<>();
+		itemTableData = gtd.getItemTableData();
 		for (int i = 0; i < gdd.getListOfObjs().size(); i++) {
 			objects = gdd.getListOfObjs().get(i);
 			if (count == 5) {
@@ -75,11 +81,12 @@ public class InitFrame implements ActionListener {
 	private ArrayList<ItemObjects> listOfItems;
 
 	public void getListOfItem(int row, int col) {
-		int pos = (row * 5) + (col);
+		
 		ItemObjects object = new ItemObjects();
-		object.copyObjects(listOfItems.get(pos));
+		object.copyObjects(itemTableData.get(row).get(col));
 		of.getBillTableModel().addRow(object);
 	}
+	
 
 	public void initItemList(int row, int column) {
 		Vector<String> rowData = new Vector<String>();
@@ -88,8 +95,8 @@ public class InitFrame implements ActionListener {
 		gdd = new GetDepartmentDetails();
 		GetItemDetails gi = new GetItemDetails();
 		DepartmentObjects dobj = gdd.getListOfObjs().get(pos);
-		gi.getItemDetails();
-		iobj = gi.getListOfObj();
+		iobj = gi.getItemDetails(false);
+		
 		for (ItemObjects item : iobj) {
 			gdd.getMapOfObj().get(item.getDeptCode()).add(item);
 		}
@@ -131,7 +138,7 @@ public class InitFrame implements ActionListener {
 				btd = new BillTaxDao();
 				btd.setBill_Prefix("AC");
 				btd.setBill_No(billSerial+1);
-				btd.setBillNoWPrefix("AC-"+billSerial+1);
+	 		btd.setBillNoWPrefix("AC-"+billSerial+1);
 				btd.setItem_Code(objects.getItemCode());
 				btd.setItem_Name(objects.getItemName());
 				btd.setDate(currentTime);
@@ -145,4 +152,28 @@ public class InitFrame implements ActionListener {
 		}
 
 	}
+
+	public void clearTableOfItems() {
+		of.getItemTable().getDataVector().clear();
+		of.getItemTable().fireTableDataChanged();
+	}
+
+	public void initTableOfItems() {
+		int counter=0;
+		listOfItems = gtd.getItemDetails(true);
+		Vector<String> rowData = new Vector<String>();
+		for (ItemObjects obj : iobj) {
+			if (counter == 5) {
+				counter = 0;
+				of.getItemTable().addRow(rowData);
+				rowData = new Vector<>();
+			}
+			rowData.add(obj.getItemName() + "\n ₹:" + obj.getItemMrp());
+			counter += 1;
+		}
+		if (!rowData.isEmpty()) {
+			of.getItemTable().addRow(rowData);
+		}
+	}
 }
+

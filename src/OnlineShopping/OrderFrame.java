@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -31,6 +33,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
 //import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -81,7 +84,7 @@ public class OrderFrame extends JFrame {
 		this.table_2 = table_2;
 	}
 
-	private TableRowSorter<TableModel> sorter;
+	private TableRowSorter<TableModel> sorter,sorter_1;
 	private double totalAmount = 0.00;
 	private JPanel contentPane;
 	private JTextField MobileField;
@@ -286,58 +289,26 @@ public class OrderFrame extends JFrame {
 		table = new JTable(etm);
 		sorter = new TableRowSorter<TableModel>();
 		table.setRowSorter(sorter);
+		
 		sorter.setModel(etm);
 		SearchNameField = new JTextField();
-
+		SearchNameField.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				it.clearTableOfItems();
+				it.initTableOfItems();
+			}
+		});
 		SearchNameField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.getKeyChar() == KeyEvent.VK_ENTER && SearchNameField.getText().isEmpty()) {
-					table.requestFocus();
-				}
-				if (e.getKeyChar() == KeyEvent.VK_ENTER || e.getKeyChar() == KeyEvent.VK_DOWN) {
-					table.requestFocus();
-					try {
-						table.setRowSelectionInterval(0, 0);
-					} catch (IllegalArgumentException exp) {
-						System.out.println("Something went wrong");
-						JOptionPane.showMessageDialog(null, "RECORD NOT FOUND");
-						SearchNameField.setText("");
-						SearchNameField.requestFocus();
-					}
-				}
-				String text = SearchNameField.getText();
-				if (text.length() == 0) {
-					sorter.setRowFilter(null);
-				} else {
-					sorter.setRowFilter(RowFilter.regexFilter("^" + text));
-				}
-			}
+			
 		});
-		SearchNameField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				search(SearchNameField.getText());
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				search(SearchNameField.getText());
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				search(SearchNameField.getText());
-			}
-
-			public void search(String str) {
-				if (str.length() == 0) {
-					sorter.setRowFilter(null);
-				} else {
-					sorter.setRowFilter(RowFilter.regexFilter(str));
-				}
-			}
-		});
+		
 		SearchNameField.setFont(new Font("Dialog", Font.PLAIN, 25));
 		SearchNameField.setColumns(10);
 		GridBagConstraints gbc_SearchNameField = new GridBagConstraints();
@@ -392,7 +363,7 @@ public class OrderFrame extends JFrame {
 				return String.class;
 			}
 		};
-
+		
 		table_1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				int row = table_1.rowAtPoint(evt.getPoint());
@@ -402,10 +373,35 @@ public class OrderFrame extends JFrame {
 				}
 			}
 		});
-
+		
+		sorter_1 = new TableRowSorter<>(table_1.getModel());
+		table_1.setRowSorter(sorter_1);
+		
+		SearchNameField.getDocument().addDocumentListener(new DocumentListener() {
+	         @Override
+	         public void insertUpdate(DocumentEvent e) {
+	            search(SearchNameField.getText());
+	         }
+	         @Override
+	         public void removeUpdate(DocumentEvent e) {
+	            search(SearchNameField.getText());
+	         }
+	         @Override
+	         public void changedUpdate(DocumentEvent e) {
+	            search(SearchNameField.getText());
+	         }
+	         public void search(String str) {
+	            if (str.length() == 0) {
+	               sorter_1.setRowFilter(null);
+	            } else {
+	               sorter_1.setRowFilter(RowFilter.regexFilter(str));
+	            }
+	         }
+	      });
+		
 //		table_1.getColumnModel().getColumn(0).setCellRenderer(renderer);
 		scrollPane_2.setViewportView(table_1);
-
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(255, 0, 0), 2, true));
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
@@ -1002,3 +998,4 @@ public class OrderFrame extends JFrame {
 		}
 	}
 }
+
